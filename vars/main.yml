@@ -1,0 +1,170 @@
+---
+# geerlingguy.firewall
+firewall_allowed_tcp_ports:
+  - "2222"
+  - "80"
+  - "8080"
+  - "443"
+
+system_packages:
+  - screen
+  - mc
+  - nano
+  - vim
+  - openssl-devel
+  - autoconf
+  - make
+  - automake
+  - binutils
+  - bison
+  - flex
+  - gcc
+  - gcc-c++
+  - gettext
+  - libtool
+  - make
+  - patch
+  - wget
+  - curl
+  - rpm-build
+  - redhat-rpm-config
+  - python-pip
+  - htop
+  - deltarpm
+
+# MWojtowicz.plugin-replace
+#plugin_replace_list:
+#  - name: php
+#    replace: php71-php
+#  - name: php-devel
+#    replace: php71-php-devel
+#  - name: php-fpm
+#    replace: php71-php-fpm
+#  - name: php-cli
+#    replace: php71-php-cli
+#  - name: php-common
+#    replace: php71-php-common
+#  - name: php-devel
+#    replace: php71-php-devel
+#  - name: php-gd
+#    replace: php71-php-gd
+#  - name: php-mbstring
+#    replace: php71-php-mbstring
+#  - name: php-pdo
+#    replace: php71-php-pdo
+#  - name: php-pecl-apcu
+#    replace: php71-php-pecl-apcu
+#  - name: php-xml
+#    replace: php71-php-xml
+#  - name: php-ldap
+#    replace: php71-php-ldap
+#  - name: php-openssl
+#    replace: php71-php-openssl
+#  - name: php-pecl-imagick
+#    replace: php71-php-pecl-imagick
+#  - name: php-mysqlnd
+#    replace: php71-php-mysqlnd
+#  - name: php-pgsql
+#    replace: php71-php-pgsql
+#  - name: php-opcache
+#    replace: php71-php-opcache
+
+# geerlingguy.php
+php_enablerepo: remi,epel
+php_packages:
+  - php71-php
+  - php71-php-devel
+  - php71-php-fpm
+  - php71-php-cli
+  - php71-php-common
+  - php71-php-devel
+  - php71-php-gd
+  - php71-php-mbstring
+  - php71-php-pdo
+  - php71-php-pecl-apcu
+  - php71-php-xml
+  - php71-php-ldap
+  - php71-php-openssl
+  - php71-php-pecl-imagick
+  - php71-php-mysqlnd
+  - php71-php-pgsql
+  - php71-php-opcache
+  - php71-php-process
+  - php71-php-intl
+#  - php
+#  - php-devel
+#  - php-fpm
+#  - php-cli
+#  - php-common
+#  - php-devel
+#  - php-gd
+#  - php-mbstring
+#  - php-pdo
+#  - php-pecl-apcu
+#  - php-xml
+#  - php-ldap
+#  - php-openssl
+#  - php-pecl-imagick
+#  - php-mysqlnd
+#  - php-pgsql
+#  - php-opcache
+
+php_executable: "php71"
+php_fpm_daemon: "php71-php-fpm"
+
+php_webserver_daemon: "nginx"
+
+php_enable_php_fpm: true
+php_fpm_listen: "127.0.0.1:9000"
+php_fpm_listen_allowed_clients: "127.0.0.1"
+php_fpm_pm_max_children: 50
+php_fpm_pm_start_servers: 5
+php_fpm_pm_min_spare_servers: 5
+php_fpm_pm_max_spare_servers: 5
+
+php_use_managed_ini: true
+php_date_timezone: "Europe/Warsaw"
+
+# geerlingguy.java
+java_packages:
+  - java-1.8.0-openjdk
+
+# geerlingguy.composer
+composer_keep_updated: true
+
+# geerlingguy.pimpmylog
+pimpmylog_install_dir: /var/www/pimpmylog
+
+# geerlingguy.nodejs
+nodejs_version: "6.x"
+nodejs_npm_global_packages:
+  - name: jslint
+  - name: jshint
+  - name: jscs
+  - name: node-sass
+  - name: less
+  - name: gulp
+  - name: bower
+  - name: webpack
+  - name: pm2
+
+# geerlingguy.nginx
+nginx_remove_default_vhost: true
+nginx_vhosts: []
+
+# geerlingguy.xdebug
+php_xdebug_remote_enable: true
+php_xdebug_remote_connect_back: true
+php_xdebug_remote_host: localhost
+php_xdebug_remote_port: 9005
+php_xdebug_module_path: /opt/remi/php71/root/lib64/php/modules
+php_extension_conf_paths: /etc/opt/remi/php71/php.d
+php_xdebug_idekey: vagrant.debug
+php_xdebug_version: 2.5.1
+php_xdebug_config_filename: 50-xdebug.ini
+
+# mwojtowicz.semodule
+selinux_enable: false
+selinux_modules:
+  - { name: "nginx_socket_write" }
+  - { name: "nginx_port_8025" }

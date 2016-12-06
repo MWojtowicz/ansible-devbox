@@ -1,0 +1,49 @@
+galaxy_info:
+  author: Michał Wójtowicz <poczta@mwojtowicz.it>
+  description: PHP devbox
+  company: MWojtowicz.it
+
+  license: MIT
+
+  min_ansible_version: 1.2
+
+  github_branch: master
+
+  platforms:
+    - name: Fedora
+      versions:
+        - all
+    - name: Ubuntu
+      versions:
+        - all
+    - name: Debian
+      versions:
+        - all
+
+  galaxy_tags:
+    - devbox
+    - php
+
+dependencies:
+  - geerlingguy.repo-epel
+  - geerlingguy.repo-remi
+  - MWojtowicz.system
+  - geerlingguy.nginx
+  - geerlingguy.git
+  - geerlingguy.java
+  - geerlingguy.elasticsearch
+  - geerlingguy.mysql
+  - geerlingguy.memcached
+  - geerlingguy.nodejs
+  - geerlingguy.ntp
+  - geerlingguy.php
+  - geerlingguy.pimpmylog
+  - geerlingguy.composer
+  - geerlingguy.redis
+  - geerlingguy.ruby
+  - geerlingguy.php-xdebug
+  - geerlingguy.varnish
+  - MWojtowicz.putty
+  - geerlingguy.daemonize
+  - geerlingguy.mailhog
+  - MWojtowicz.semodule

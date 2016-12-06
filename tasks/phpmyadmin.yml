@@ -1,0 +1,46 @@
+- name: "Check if phpMyAdmin is installed"
+  stat:
+    path: /var/www/phpmyadmin
+  register: phpmyadmin
+
+- name: "Download phpMyAdmin"
+  get_url:
+    url: https://github.com/phpmyadmin/phpmyadmin/archive/RELEASE_4_6_6.tar.gz
+    dest: /tmp/phpmyadmin.tar.gz
+  register: phpmyadmin_download
+  when: not phpmyadmin.stat.exists
+
+- name: "Remove existing phpMyAdmin"
+  file:
+    path: /var/www/phpmyadmin
+    state: absent
+  when: phpmyadmin_download.changed
+
+- name: "Install phpMyAdmin"
+  unarchive:
+    src: /tmp/phpmyadmin.tar.gz
+    dest: /var/www
+    remote_src: yes
+  when: phpmyadmin_download.changed or (not phpmyadmin.stat.exists)
+
+- name: "Find phpMyAdmin dir"
+  find:
+    paths: "/var/www"
+    patterns: "phpmyadmin*"
+    file_type: directory
+  when: phpmyadmin_download.changed or (not phpmyadmin.stat.exists)
+  register: phpMyAdminDirPath
+  failed_when: "phpMyAdminDirPath.files|length != 1"
+
+- name: "Rename phpMyAdmin dir"
+  command: mv {{ phpMyAdminDirPath.files.0.path }} /var/www/phpmyadmin
+  args:
+    chdir: /
+  when: not phpmyadmin.stat.exists
+
+- name: "Install phpMyAdmin dependencies"
+  command: /usr/local/bin/composer update --no-dev
+  args:
+    chdir: /var/www/phpmyadmin
+    creates: /var/www/phpmyadmin/vendor
+  when: phpmyadmin_download.changed or (not phpmyadmin.stat.exists)

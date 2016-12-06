@@ -1,0 +1,70 @@
+---
+- name: "PHP symlinks"
+  file:
+    src: "/opt/remi/php71/root/bin/{{ item }}"
+    dest: "/usr/bin/{{ item }}"
+    state: link
+  with_items:
+    - phpize
+    - php
+    - phar
+    - php-cgi
+    - php-config
+
+# tasks file for mwojtowicz.devbox
+- include: phpmyadmin.yml
+
+- name: "nginx vHosts"
+  template:
+      src: "{{ item }}"
+      dest: /etc/nginx/conf.d/
+      owner: nginx
+      group: nginx
+      mode: 0644
+      backup: yes
+  with_fileglob:
+    - nginx/vhosts/*
+  notify: reload nginx
+
+- name: "Pimpmylog config"
+  template:
+      src: "files/pimpmylogs.j2"
+      dest: "/var/www/pimpmylog/config.user.php"
+      owner: nginx
+      group: nginx
+      mode: 0644
+      backup: yes
+
+- name: "Varnish config"
+  template:
+      src: "files/varnish/default.j2"
+      dest: "/etc/varnish/default.vcl"
+      owner: root
+      group: root
+      mode: 0644
+      backup: yes
+  notify: restart varnish
+
+- name: "Check if Symfony is installed"
+  stat:
+      path: /usr/local/bin/symfony
+  register: symfony_bin
+
+- name: "Download Symfony installer"
+  get_url:
+    url: https://symfony.com/installer
+    dest: /usr/local/bin/symfony
+    mode: 0777
+  when: not symfony_bin.stat.exists
+
+- name: "Check if PHPUnit is installed"
+  stat:
+      path: /usr/local/bin/phpunit
+  register: phpunit_bin
+
+- name: "Download PHPUnit"
+  get_url:
+    url: https://phar.phpunit.de/phpunit.phar
+    dest: /usr/local/bin/phpunit
+    mode: 0777
+  when: not phpunit_bin.stat.exists
